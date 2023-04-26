@@ -7,9 +7,30 @@ import { Container } from "./App.styled";
 
 export class App extends React.Component {
   state = {
-    contacts,
+    contacts: [],
     filter: '',
   };
+
+  componentDidMount() { 
+    const myContacts = localStorage.getItem('contacts');
+
+    if (myContacts !== null) {
+      this.setState({
+        contacts: JSON.parse(myContacts)
+      })
+    } else {
+      this.setState({
+        contacts,
+      })
+    }
+  }
+  
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevProps.contacts !== this.state.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts))
+    }
+  };
+  
 
   addContact = newContact => {
     this.setState(prevState => ({
